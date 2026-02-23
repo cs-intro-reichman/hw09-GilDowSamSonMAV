@@ -1,0 +1,8 @@
+Expected: Natural selection, how is it possible, generally much changed
+simultaneous rotation, when the importance of Batrachians, 393.
+  Batrachians (frogs, toads, newts) have to modified 
+Actual: Natural selection, how is it possible, generally much changed
+conditions of civilised dogs,
+even as a genera; for we well defined to the plants are homologous. A fanciers select
+FAIL with windowLength = 7, seed = 20, initialText = Natural, textLength = 172
+Test generate result: FAILED
