@@ -5,6 +5,7 @@ public class ListTester {
     public static void main(String[] args) {
         String methodName = args[0];
         boolean result = false;
+
         switch (methodName) {
             case "addFirst":
                 result = testAddFirst();
@@ -14,7 +15,7 @@ public class ListTester {
                 break;
             case "indexOf":
                 result = testIndexOf();
-                break;  
+                break;
             case "get":
                 result = testGet();
                 break;
@@ -24,18 +25,29 @@ public class ListTester {
             case "remove":
                 result = testRemove();
                 break;
-            
+
             case "all":
-                result = testAddFirst();
-                result = result && testToString();
-                result = result && testIndexOf();
-                result = result && testGet();
-                result = result && testUpdate();
-                result = result && testRemove();
-                break; 
+                boolean addFirstResult = testAddFirst();
+                boolean toStringResult = testToString();
+                boolean indexOfResult = testIndexOf();
+                boolean getResult = testGet();
+                boolean updateResult = testUpdate();
+                boolean removeResult = testRemove();
+
+                System.out.println("Test addFirst result: " + (addFirstResult ? "PASSED" : "FAILED"));
+                System.out.println("Test toString result: " + (toStringResult ? "PASSED" : "FAILED"));
+                System.out.println("Test indexOf result: " + (indexOfResult ? "PASSED" : "FAILED"));
+                System.out.println("Test get result: " + (getResult ? "PASSED" : "FAILED"));
+                System.out.println("Test update result: " + (updateResult ? "PASSED" : "FAILED"));
+                System.out.println("Test remove result: " + (removeResult ? "PASSED" : "FAILED"));
+
+                result = addFirstResult && toStringResult && indexOfResult && getResult && updateResult && removeResult;
+                return; // already printed individual results
             default:
-                break;
+                System.out.println("Unknown test: '" + methodName + "'");
+                return;
         }
+
         System.out.println("Test " + methodName + " result: " + (result ? "PASSED" : "FAILED"));
     }
 
@@ -43,10 +55,8 @@ public class ListTester {
         boolean result = true;
         String [] testWords = {"word","first","buzz"};
         for (int i = 0; i < testWords.length; i++) {
-            result = result && testAddFirst(testWords[i]);
-        }
-        if (!result){
-            System.out.println("AddFirst Test failed");
+            boolean wordResult = testAddFirst(testWords[i]);
+            result = result && wordResult;
         }
         return result;
     }
@@ -55,22 +65,13 @@ public class ListTester {
         LinkedList<CharData> solution = new LinkedList<CharData>();
         List yourSolution = new List();
         for (int i = 0; i < word.length() ; i++) {
-            
             solution.addFirst(new CharData(word.charAt(i)));
             yourSolution.addFirst(word.charAt(i));
             boolean res = testAddFirstCase(solution,yourSolution);
-            if (!res){
-                System.out.println("Word: " + word + ", Char: " + word.charAt(i) + ", Index: " + i);
-                System.out.println("Expected: size:" + solution.size() + ", first: " + solution.getFirst());
-                System.out.println("Actual: " + yourSolution.getSize() + ", first: " + yourSolution.getFirst().chr);
-            }
             result = result && res;
         }
-        if (!result){
-            System.out.println("AddFirst for word: " + word + " Test failed");
-        }
         return result;
-        
+
     }
     private static boolean testAddFirstCase (LinkedList<CharData> solution, List yourSolution) {
         return solution.size() == yourSolution.getSize() && solution.get(0).equals(yourSolution.getFirst().chr);
@@ -84,20 +85,19 @@ public class ListTester {
             "((l 1 0.0 0.0) (i 1 0.0 0.0) (s 1 0.0 0.0) (t 1 0.0 0.0))"
         };
         for (int i = 0; i < testWords.length; i++) {
-            result = result && testToString(testWords[i],solutions[i]);
-        }
-        if (!result){
-            System.out.println("ToString Test failed");
+            boolean wordResult = testToString(testWords[i],solutions[i]);
+            result = result && wordResult;
         }
         return result;
     }
-    
+
     private static boolean testToString (String word, String solution) {
         List yourSolution = new List();
         for (int i = 0; i < word.length(); i++) {
             yourSolution.addFirst(word.charAt(word.length() - 1 - i));
         }
-        return yourSolution.toString().equals(solution);
+        String actual = yourSolution.toString();
+        return actual.equals(solution);
     }
 
     public static boolean testIndexOf() {
@@ -107,23 +107,14 @@ public class ListTester {
         for (int i = 0; i < testWords.length; i++) {
             String w = testWords[i];
             for (int j = 0; j < w.length(); j++) {
-                yourSolution.addFirst(w.charAt(w.length() - 1 - j));                
+                yourSolution.addFirst(w.charAt(w.length() - 1 - j));
             }
             boolean res = true;
             for (int j = 0; j < w.length(); j++) {
                 boolean temp = testIndexOfCase(yourSolution,w,w.charAt(j));
                 res = res && temp;
-                if (!temp){
-                    System.out.println("Word: " + w + ", Char: " + w.charAt(j));
-                    System.out.println("Expected: " + w.indexOf(w.charAt(j)));
-                    System.out.println("Actual: " + yourSolution.indexOf(w.charAt(j)));
-                }
-                
             }
             result = result && res;
-        }
-        if (!result){
-            System.out.println("IndexOf Test failed");
         }
         return result;
     }
@@ -138,23 +129,14 @@ public class ListTester {
         for (int i = 0; i < testWords.length; i++) {
             String w = testWords[i];
             for (int j = 0; j < w.length(); j++) {
-                yourSolution.addFirst(w.charAt(w.length() - 1 - j));                
+                yourSolution.addFirst(w.charAt(w.length() - 1 - j));
             }
             boolean res = true;
             for (int j = 0; j < w.length(); j++) {
                 boolean temp = testGetCase(yourSolution, w, j);
                 res = res && temp;
-                if (!temp){
-                    System.out.println("Word: " + w + ", Index: " + j);
-                    System.out.println("Expected: " + w.charAt(j));
-                    System.out.println("Actual: " + yourSolution.get(j).chr);
-                }
             }
             result = result && res;
-            
-        }
-        if (!result){
-            System.out.println("Get Test failed");
         }
         return result;
     }
@@ -174,16 +156,8 @@ public class ListTester {
             for (int j = 0; j < w.length(); j++) {
                 boolean temp = testUpdateCase(yourSolution, w, j);
                 res = res && temp;
-                if (!temp){
-                    System.out.println("Word: " + w + ", Index: " + j);
-                    System.out.println("Expected: " + w.charAt(j));
-                    System.out.println("Actual: " + yourSolution.get(j).chr);
-                }
             }
             result = result && res;
-        }
-        if (!result){
-            System.out.println("Update Test failed");
         }
         return result;
     }
@@ -222,37 +196,33 @@ public class ListTester {
             {'o','r','_','g'},
         };
 
-        
         for (int i = 0; i < testWords.length; i++) {
             List yourSolution = new List();
             String w = testWords[i];
             for (int j = 0; j < w.length(); j++) {
-                yourSolution.addFirst(w.charAt(w.length() - 1 - j));                
+                yourSolution.addFirst(w.charAt(w.length() - 1 - j));
             }
-            boolean res = testRemoveCase(yourSolution, w, removeChars[i]);
-            if (!res){
-                System.out.println("Word: " + w + ", chars attempted to remove: " + Arrays.toString(removeChars[i]));
-                System.out.println("Actual: " + yourSolution.toString());
-            }
-            result = result && res;   
-        }
-        if (!result){
-            System.out.println("Remove Test failed");
+            boolean res = testRemoveCase(yourSolution, removeChars[i]);
+            result = result && res;
         }
         return result;
     }
 
-    private static boolean testRemoveCase (List yourSolution, String sol, char [] removeChars) {
+    private static boolean testRemoveCase (List yourSolution, char [] removeChars) {
         boolean result = true;
         for (int i = 0; i < removeChars.length; i++) {
             char c = removeChars[i];
-            int size = yourSolution.getSize();
+            int sizeBefore = yourSolution.getSize();
             boolean removeResult = yourSolution.remove(c);
+            int sizeAfter = yourSolution.getSize();
+
+            boolean sizeCorrect;
             if (removeResult) {
-                result = result && (size - 1 == yourSolution.getSize());
+                sizeCorrect = (sizeBefore - 1 == sizeAfter);
             } else {
-                result = result && (size == yourSolution.getSize());
+                sizeCorrect = (sizeBefore == sizeAfter);
             }
+            result = result && sizeCorrect;
         }
         return result;
     }
